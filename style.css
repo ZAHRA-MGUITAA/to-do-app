@@ -97,9 +97,15 @@ header {
   display: none;
 }
 /*tasks*/
+.new-task{
+  padding-right: 10px;
+}
+.new-task input{
+  padding-left: 10px !important;
+}
 input[type="text"] {
   width: 100%;
-  padding: 15px 10px;
+  padding: 15px 0px;
   background: var(--Very-Dark-Desaturated-Blue);
   border: none;
   font-size: 18px;
@@ -112,16 +118,56 @@ input[type="text"]:focus{
   background: var(--Very-Dark-Desaturated-Blue);
   margin-top: 35px;
   width: 100%;
-  padding: 15px 10px;
+  padding: 15px 0px;
 }
 .day-task {
     display: flex;
     border-bottom: 1px solid var(--Dark-Grayish-Blue);
     padding-left: 10px;
+    padding-right: 10px;
+    position: relative;
+} 
+.day-task input{
+  padding-left: 10px !important;
 }
 input.checkbox {
-    background-color: red;
-    border-radius: 50%;
+    /* background-color: red;
+    border-radius: 50%; */
+    z-index: 99;
+    opacity: 0;
+}
+span.checkmark {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 11px;
+  left: 6px;
+  background: var(--Very-Dark-Desaturated-Blue);
+  border: 1px solid var(--Very-Dark-Grayish-Blue);
+}
+.lightMode span.checkmark{
+  background: var(--Very-Light-Gray);
+  border: 1px solid var(--Dark-Grayish-Blue);
+}
+input.checkbox:checked ~ span.checkmark {
+  background-image: linear-gradient(hsl(192, 100%, 67%),hsl(280, 87%, 65%));
+
+}
+
+span.checkmark:after {
+  content: '';
+  background: url("./images/icon-check.svg");
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  object-fit: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: none;
+}
+input.checkbox:checked ~ span.checkmark:after{
+  display: block;
 }
 /*action*/
 .actions li {
@@ -168,4 +214,30 @@ input.checkbox:after {
   height: auto;
   width: auto;
 }
+}
+
+
+body.lightMode{
+  background: var(--Very-Light-Gray);
+}
+.lightMode #light-mode{
+  display: none;
+}
+.lightMode #dark-mode{
+  display: block;
+}
+.lightMode input{
+  background: var(--Very-Light-Gray);
+}
+.lightMode .tasks-actions{
+  background: var(--Very-Light-Gray);
+}
+.lightMode li{
+  color: #000000;
+}
+.lightMode p{
+  color: #000000;
+}
+.lightMode header{
+  background : url("./images/bg-desktop-light.jpg");
 }

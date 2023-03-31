@@ -12,8 +12,10 @@ const addTask = ()=>{
       let light = document.querySelector('.lightMode');
       if(dark){
         var taskp = `
-        <div class="day-task">
+       
+        <div class="day-task" draggable="true">
         <input class="checkbox" type="checkbox" name="" id="${id}" >
+        <span class="checkmark"></span>
         <input type="text" value="${task.value}" readonly style="background:var(--Very-Dark-Desaturated-Blue)">
         <img class="icon-cross" src="./images/icon-cross.svg" alt="">
     </div>`;
@@ -21,6 +23,7 @@ const addTask = ()=>{
         var taskp = `
         <div class="day-task">
         <input class="checkbox" type="checkbox" name="" id="${id}" >
+        <span class="checkmark"></span>
         <input type="text" value="${task.value}" readonly style="background:var(--Very-Light-Gray);color:#000000">
         <img class="icon-cross" src="./images/icon-cross.svg" alt="">
     </div>`;
@@ -30,6 +33,9 @@ const addTask = ()=>{
       taskslist.insertAdjacentHTML("afterbegin",taskp);
       task.value = "";
       countTasksLeft();
+      removeTask();
+      // dragtask();
+
 
     }
    
@@ -42,24 +48,32 @@ const toCompleted = ()=>{
     let checkboxs = Array.from(document.querySelectorAll('.checkbox'));
     let checkedCheckbox = checkboxs.filter((checkbox)=>checkbox.checked);
     checkedCheckbox.map((item)=>{
-     item.nextElementSibling.style.textDecoration="line-through";
+     item.nextElementSibling.nextElementSibling.style.textDecoration="line-through";
     });
     let notcheckedCheckbox = checkboxs.filter((checkbox)=>!checkbox.checked);
     notcheckedCheckbox.map((item)=>{
-     item.nextElementSibling.style.textDecoration="none";
+     item.nextElementSibling.nextElementSibling.style.textDecoration="none";
     });
   }); 
 }
 
-// const toActive = () => {
-//   let taskschange = document.querySelector('.tasks');
-//   taskschange.addEventListener('change',()=>{
-//     let checkboxs = document.querySelectorAll('.checkbox');
-//     Array.from(checkboxs).filter((checkbox)=>!checkbox.checked).map((item)=>{
+const removeTask = () => {
+  // let taskschange = document.querySelector('.tasks');
+  // taskschange.addEventListener('change',()=>{
+  let iconcross = document.querySelectorAll('.icon-cross');
+  Array.from(iconcross).map((icon)=>{
+    icon.addEventListener('click',(event)=>{
+      // console.log(event.target);
+      event.target.parentElement.remove();
+      countTasksLeft();
 
-//     })
-//   })
-// }
+    })
+  });
+
+// });
+}
+
+
 
 const clearCompleted = () => {
   document.getElementById('clear-completed').addEventListener('click',()=>{
@@ -159,6 +173,38 @@ const darktMode = () => {
   })
 }
 
+const checkmark = () => {
+  let checkmark =  document.querySelectorAll('.checkmark');
+  Array.from(checkmark).map((check)=>{
+    check.addEventListener('click',()=>{
+      console.log(check);
+    })
+  })
+
+}
+
+// let drag = null;
+// const dragtask = () => {
+//   let daytasks = document.querySelectorAll('.day-task');
+//   daytasks.forEach(task => {
+//     task.addEventListener('dragstart',()=>{
+//       task.style.opacity = '0.5';
+//       drag = task;
+//     });
+//     task.addEventListener('dragend',()=>{
+//       task.style.opacity = '1';
+//       drag = null;
+//     })
+//   });
+//   let tasks = document.querySelector('.box');
+//   tasks.forEach(item=>{
+//     item.addEventListener('drop',()=>{
+//       item.append(drag);
+//     })
+//   })
+ 
+// }
+
 addTask();
 toCompleted();
 displayCompleted();
@@ -167,9 +213,13 @@ displayActive();
 lightMode();
 darktMode();
 clearCompleted();
-
-
 let taskschange = document.querySelector('.tasks');
 taskschange.addEventListener('change',()=>{
   countTasksLeft();
- });
+});
+
+let daytasks = document.querySelector('.tasks');
+new Sortable(daytasks,{
+  animation:300
+});
+
